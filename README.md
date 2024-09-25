@@ -70,7 +70,7 @@ Numpy is a library designed to manipulate N-dimensional array
 
 #### ndarray Initialization
 
-Doc URL: https://numpy.org/doc/2.1/user/basics.creation.html
+[Doc URL](https://numpy.org/doc/2.1/user/basics.creation.html)
 
 ```python
 # Numpy basics: import, ndarray initialization, shape
@@ -108,7 +108,7 @@ print('np.eye\n', np.eye(4))
 
 #### Item indexing
 
-Doc URL: https://numpy.org/doc/2.1/user/basics.indexing.html
+[Doc URL](https://numpy.org/doc/2.1/user/basics.indexing.html)
 
 ```python
 import numpy as np
@@ -156,7 +156,7 @@ print(x.dot(y)) # or print(x @ y)
 
 #### Broadcasting rules in arithmetic
 
-Doc URL: https://numpy.org/doc/stable/user/basics.broadcasting.html
+[Doc URL](https://numpy.org/doc/stable/user/basics.broadcasting.html)
 
 - Two dimensions are compatible when they are equal or one of them is 1
 - General broadcasting rule: matching dimensions **from back to front**
@@ -185,7 +185,7 @@ PyTorch is a Popular deep learning framework
 
 #### Torch tensor creation
 
-Doc URL: https://pytorch.org/docs/stable/torch.html
+[Doc URL](https://pytorch.org/docs/stable/torch.html)
 
 ```python
 import torch
@@ -222,7 +222,7 @@ print(x.grad) # 2x
 
 #### Torch Autograd
 
-Doc URL: https://pytorch.org/docs/stable/autograd.html
+[Doc URL](https://pytorch.org/docs/stable/autograd.html)
 
 `torch.autograd` provides classes and functions implementing automatic differentiation of arbitrary scalar valued functions. It requires minimal alternation of the codes, just declare `requires_grad=True` during the initialization of tensor, `autograd` will be enabled.
 
@@ -318,7 +318,7 @@ test_dataset = datasets.SVHN(root="./data/’
 )
 ```
 
-An example framework for customed dataset with `torch.utils.data.Dataset` (Doc URL: https://pytorch.org/docs/stable/data.html#torch.utils.data.Dataset)
+An example framework for customed dataset with `torch.utils.data.Dataset` ([Doc URL](https://pytorch.org/docs/stable/data.html#torch.utils.data.Dataset))
 
 - To customize your own dataset, you need to overwrite 3 functions: `__init__`, `__len__`, and `__getitem__`
 
@@ -467,7 +467,7 @@ print(y)
 #						[2.0000, 2.0000]]]])
 ```
 
-##### Linear Layer `torch.nn.Linear` (Doc URL: [https://pytorch.org/docs/stable/generated/torch.nn.Linear.html#torch.nn.Linear](https://pytorch.org/docs/stable/generated/torch.nn.Linear.html))
+##### Linear Layer `torch.nn.Linear` ([Doc URL](https://pytorch.org/docs/stable/generated/torch.nn.Linear.html))
 
 Apply a linear transformation to the incoming data $ Y = xA^T + b$
 
@@ -497,11 +497,11 @@ An activation function is a function that is added into an artificial neural net
 
 <img src="img/image-20240925105652624.png" alt="image-20240925105652624" style="zoom: 67%;" />
 
-Sigmiod Function: `torch.nn.Sigmoid` ([Doc URL]([https://pytorch.org/docs/stable/generated/torch.nn.Sigmoid.html#torch.nn.Sigmoid](https://pytorch.org/docs/stable/generated/torch.nn.Sigmoid.html))) - Computationally expensive, Causes vanishing gradient problem and not zero-centred. Generally used for **binary classification** problems.
+Sigmiod Function: `torch.nn.Sigmoid` ([Doc URL](https://pytorch.org/docs/stable/generated/torch.nn.Sigmoid.html)) - Computationally expensive, Causes vanishing gradient problem and not zero-centred. Generally used for **binary classification** problems.
 
-Tanh Function: `torch.nn.Tanh` ([Doc URL]([https://pytorch.org/docs/stable/generated/torch.nn.Tanh.html#torch.nn.Tanh](https://pytorch.org/docs/stable/generated/torch.nn.Tanh.html))) - Solve the problem of non zero-center
+Tanh Function: `torch.nn.Tanh` ([Doc URL](https://pytorch.org/docs/stable/generated/torch.nn.Tanh.html)) - Solve the problem of non zero-center
 
-ReLU Function: `torch.nn.ReLU` ([Doc URL]([https://pytorch.org/docs/stable/generated/torch.nn.ReLU.html#torch.nn.ReLU](https://pytorch.org/docs/stable/generated/torch.nn.ReLU.html))) - This is a widely used activation function, especially with Convolutional Neural networks. It is easy to compute and does not saturate and does not cause the Vanishing Gradient Problem. It has just one issue of not being zero centred. It suffers from “dying ReLU” problem. Since the output is zero for all negative inputs. It causes some nodes to completely die and not learn anything.
+ReLU Function: `torch.nn.ReLU` ([Doc URL](https://pytorch.org/docs/stable/generated/torch.nn.ReLU.html)) - This is a widely used activation function, especially with Convolutional Neural networks. It is easy to compute and does not saturate and does not cause the Vanishing Gradient Problem. It has just one issue of not being zero centred. It suffers from “dying ReLU” problem. Since the output is zero for all negative inputs. It causes some nodes to completely die and not learn anything.
 
 ```python
 # torch.nn.ReLU(inplace=False) [highly suggest to set the inplace=True to save memory consumption]
@@ -518,7 +518,7 @@ print(relu(x))
 #        [0.6870, 1.1721, 0.0000]])
 ```
 
-##### Build the model with `torch.nn.module` (Doc URL: [https://pytorch.org/docs/stable/generated/torch.nn.Module.html#torch.nn.Module](https://pytorch.org/docs/stable/generated/torch.nn.Module.html))
+##### Build the model with `torch.nn.module` ([Doc URL](https://pytorch.org/docs/stable/generated/torch.nn.Module.html#torch.nn.Module))
 
 `torch.nn.module` is the base class for all neural network modules.
 
@@ -581,7 +581,7 @@ loss = loss_function(output, label)
 
 
 
-##### Construct Optimizer (Doc URL: https://pytorch.org/docs/stable/optim.html)
+##### Construct Optimizer ([Doc URL](https://pytorch.org/docs/stable/optim.html))
 
 Example: `torch.optim.SGD` stochastic gradient descent
 
@@ -655,7 +655,7 @@ if __name__ == '__main__':
 
 
 
-##### Save checkpoints: `torch.save` (Doc URL: https://pytorch.org/docs/stable/generated/torch.save.html)
+##### Save checkpoints: `torch.save` ([Doc URL](https://pytorch.org/docs/stable/generated/torch.save.html))
 
 ```python
 import torch
@@ -674,7 +674,7 @@ torch.save({'epoch': epoch + 1,
 
 
 
-##### Load the checkpoints to restore training `torch.load` (Doc URL: https://pytorch.org/docs/stable/generated/torch.load.html)
+##### Load the checkpoints to restore training `torch.load` ([Doc URL](https://pytorch.org/docs/stable/generated/torch.load.html))
 
 ```python
 import torch
@@ -693,7 +693,7 @@ optimizer.load_state_dict(checkpoint['optimizer'])
 
 Problem 1: classification task	Problem 2: segmentation task
 
-##### Classification Metrics: `torchmetrics` (Doc URL: https://lightning.ai/docs/torchmetrics/stable/)
+##### Classification Metrics: `torchmetrics` ([Doc URL](https://lightning.ai/docs/torchmetrics/stable/))
 
 `torchmetrics` is a metrics library in PyTorch that provides a collection of metrics for evaluating and monitoring the performance of deep learning models
 
@@ -725,7 +725,7 @@ auroc = AUROC(task="multiclass", num_classes=3)
 auroc(preds, target)
 ```
 
-##### Segmentation Metrics: `medpy` (Doc URL: https://loli.github.io/medpy/metric.html)
+##### Segmentation Metrics: `medpy` ([Doc URL](https://loli.github.io/medpy/metric.html))
 
 `MedPy` is a Python library that focuses on medical image processing tasks. It provides functionality (including commonly used medical evaluation metrics) for various image processing tasks commonly encountered in medical imaging applications.
 
@@ -866,7 +866,7 @@ Assignment 2: **Heart Magnetic Resonance Image** (3D medical image)
 
 ![image-20240925155021867](img/image-20240925155021867.png)
 
-`SimpleITK` for access raw image data in Python (Doc URL: https://simpleitk.readthedocs.io/en/master/gettingStarted.html#python-binary-files)
+`SimpleITK` for access raw image data in Python ([Doc URL](https://simpleitk.readthedocs.io/en/master/gettingStarted.html#python-binary-files))
 
 ```shell
 pip install SimpleITK
