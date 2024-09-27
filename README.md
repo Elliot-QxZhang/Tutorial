@@ -1089,7 +1089,7 @@ Dataset Download: https://challenge.isic-archive.com/data/#2018
 
 - Eight Classes: Melanoma, Melanocytic nevus, Basal Cell Carcinoma, Actinic Keratosis, Benign Keratosis, Dermatofibroma, Vascular Lesion 
 
-<img src="/Users/elliotz/Library/Application Support/typora-user-images/image-20240926111733298.png" alt="image-20240926111733298" style="zoom:80%;" />
+<img src="img/image-20240926111733298.png" alt="image-20240926111733298" style="zoom:80%;" />
 
 **Semi-supervised learning for using extra training data is allowed (ISIC2019)**
 
