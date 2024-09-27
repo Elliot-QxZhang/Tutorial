@@ -1,12 +1,22 @@
 ## Tutorial for Assignment 1
 
+Material Link: https://github.com/Elliot-QxZhang/ELEC5690-Tutorial
+
+### Personal Introduction
+
+Qixiang ZHANG (Year 2 PhD student)	Supervisor: Prof. Xiaomeng LI	Research Interest: Medical AI, Pathology Image Analysis
+
+>  Office Hour: Thursday 2:00 PM - 3:30 PM at Rm 3117	Email: qzhangcq@connect.ust.hk
+
+
+
 ### Outline
 
 - Basic knowledge (Python, Numpy, PyTorch)
 - A Brief Introduction to Train a Model with PyTorch
-- Dataloader in PyTorch and Medical Data
-- Save/Load Weights in PyTorch
-- Introduction to Some Useful Strategies in Deep Neural Networks
+- Understanding Medical Data & Preprocess
+- Avoid Overfitting
+- Details about Assignment 1
 
 ### Prerequisite
 
@@ -15,11 +25,13 @@
 
 
 
+
+
 ## Basic Knowledge
 
 ### Python
 
-- A high-level, dynamically typed paragramming language.
+- A high-level, dynamically typed programming language.
 - Easy to learn.
 - Huge community: libraries and frameworks.
 
@@ -27,7 +39,7 @@
 
 ### Install Anaconda/Miniconda
 
-Anaconda is a popular **open-source distribution** of the Python  that aims to simplify library management and deployment.
+Anaconda is a popular **open-source distribution** of the Python that aims to simplify library management and deployment.
 
 Anaconda URL: https://www.anaconda.com/
 
@@ -37,12 +49,15 @@ Miniconda URL (suggested): https://docs.conda.io/en/latest/miniconda.html
 
 ### Install Numpy & PyTorch
 
+- PyTorch is a popular deep learning framework
+- Numpy is a library designed to manipulate N-dimensional array
+
 ```shell
 # check for you cuda version
 nvidia-smi
 
 # create an anaconda environment
-conda create -n torch python=3.9
+conda create -n tutorial python=3.9
 
 # activate your conda virtual environment
 conda activate tutorial
@@ -70,7 +85,7 @@ Numpy is a library designed to manipulate N-dimensional array
 
 #### ndarray Initialization
 
-[Doc URL](https://numpy.org/doc/2.1/user/basics.creation.html)
+Doc URL: https://numpy.org/doc/2.1/user/basics.creation.html
 
 ```python
 # Numpy basics: import, ndarray initialization, shape
@@ -87,28 +102,52 @@ tensor = np.array([[[1, 2],
                               [7, 8]]])
 
 print(f'vector: {vector.shape}\n', vector)
+# vector: (3,)
+# [1 2 3]
 print(f'matrix: {matrix.shape}\n', matrix)
+# matrix: (2, 3)
+ # [[1 2 3]
+ # [4 5 6]]
 print(f'tensor: {tensor.shape}\n', tensor)
+# tensor: (2, 2, 2)
+# [[[1 2]
+#  [3 4]]
+# [[5 6]
+#  [7 8]]]
 
 # other initialization functions
 # create ndarray with all element set to zero, parameter: shape
 print('np.zeros\n', np.zeros([2, 3]))
+# np.zeros
+# [[0. 0. 0.]
+# [0. 0. 0.]]
 
 # create ndarray with all element set to one, parameter: shape
 print('np.ones\n', np.ones([2, 3]))
+# np.ones
+# [[1. 1. 1.]
+# [1. 1. 1.]]
 
 # create ndarray with all element set to a specified value, parameter: shape, filled value (e.g., 3.0)
 print('np.full\n', np.full([2, 3], fill_value=3.))
+# np.full
+# [[3. 3. 3.]
+# [3. 3. 3.]]
 
 # create a diagonal matrix, with with ones on the diagonal and zeros elsewhere, parameter: shape
 print('np.eye\n', np.eye(4))
+# np.eye
+# [[1. 0. 0. 0.]
+# [0. 1. 0. 0.]
+# [0. 0. 1. 0.]
+# [0. 0. 0. 1.]]
 ```
 
 
 
 #### Item indexing
 
-[Doc URL](https://numpy.org/doc/2.1/user/basics.indexing.html)
+Doc URL: https://numpy.org/doc/2.1/user/basics.indexing.html
 
 ```python
 import numpy as np
@@ -134,21 +173,39 @@ print(tensor[1, 1, [0, 2]]) # [10, 12]
 
 #### Array arithmetic
 
+<img src="/Users/elliotz/Library/Application Support/typora-user-images/image-20240926155313965.png" alt="image-20240926155313965" style="zoom: 50%;" />
+
 ```python
 import numpy as np
 
 x = np.ones([3, 3])
+# [[1. 1. 1.]
+# [1. 1. 1.]
+# [1. 1. 1.]]
 y = np.ones([3, 3])
+# [[1. 1. 1.]
+# [1. 1. 1.]
+# [1. 1. 1.]]
 
 ## element-wise
 print(x + y)
+# [[3. 3. 3.]
+# [3. 3. 3.]
+# [3. 3. 3.]]
 print(x - y)
+# [[0. 0. 0.]
+# [0. 0. 0.]
+# [0. 0. 0.]]
 print(x * y)
+# [[1. 1. 1.]
+# [1. 1. 1.]
+# [1. 1. 1.]]
 print(x / y)
-print(x ** y)
+# [[1. 1. 1.]
+# [1. 1. 1.]
+# [1. 1. 1.]]
 
 # matrix
-print(np.dot(x, y))
 print(x.dot(y)) # or print(x @ y)
 ```
 
@@ -156,7 +213,7 @@ print(x.dot(y)) # or print(x @ y)
 
 #### Broadcasting rules in arithmetic
 
-[Doc URL](https://numpy.org/doc/stable/user/basics.broadcasting.html)
+Doc URL: https://numpy.org/doc/stable/user/basics.broadcasting.html
 
 - Two dimensions are compatible when they are equal or one of them is 1
 - General broadcasting rule: matching dimensions **from back to front**
@@ -165,7 +222,7 @@ print(x.dot(y)) # or print(x @ y)
 
 <img src="img/image-20240924160328938.png" alt="image-20240924160328938" style="zoom:50%;" />
 
-<img src="img/image-20240924160343955.png" alt="image-20240924160343955" style="zoom:50%;" />
+<img src="img/image-20240924160343955.png" alt="image-20240924160343955" style="zoom: 50%;" />
 
 
 
@@ -185,7 +242,7 @@ PyTorch is a Popular deep learning framework
 
 #### Torch tensor creation
 
-[Doc URL](https://pytorch.org/docs/stable/torch.html)
+Doc URL: https://pytorch.org/docs/stable/torch.html
 
 ```python
 import torch
@@ -222,7 +279,7 @@ print(x.grad) # 2x
 
 #### Torch Autograd
 
-[Doc URL](https://pytorch.org/docs/stable/autograd.html)
+Doc URL: https://pytorch.org/docs/stable/autograd.html
 
 `torch.autograd` provides classes and functions implementing automatic differentiation of arbitrary scalar valued functions. It requires minimal alternation of the codes, just declare `requires_grad=True` during the initialization of tensor, `autograd` will be enabled.
 
@@ -265,11 +322,11 @@ Optimization: we finally optimize the model weights by conducting gradient desce
 
 
 
-### Training a model with PyTorch
+## Training a model with PyTorch
 
-- Step 1: Design a dataset/dataloader (pre-process, distribute your dataset into mini-batch during each iteration)
-- Step 2: Design your model (input size, output size, forward pass)
-- Step 3: Design loss function, conduct backward pass, design your optimizer
+- Step 1: Build a `torch.utils.data.Dataset` and a `torch.utils.data.Dataloader` object (`Dataset` object is used to **read and pre-process** your data, `Dataloader` object is used to **distribute** your dataset into **mini-batch** for each iteration)
+- Step 2: Design your model with `torch.nn.module` (input size, output size, forward pass)
+- Step 3: Design backward pass: loss function and optimizer
 
 For each iteration: 1. forward pass: compute prediction	2. backward pass: compute gradients	3. Optimization: update model weights
 
@@ -285,7 +342,9 @@ The **Street View House Numbers** (SVHN) Dataset is a real-world image dataset f
 
 ![image-20240924203100691](img/image-20240924203100691.png)
 
+#### Step 1: Build Dataset and Dataloader
 
+<img src="img/image-20240925210605863.png" alt="image-20240925210605863" style="zoom:50%;" />
 
 #### Design your dataset
 
@@ -300,7 +359,7 @@ from torchvision import datasets, transforms
 
 transform = transforms.Compose([
 						transforms.RandomVerticalFlip(),
-						transforms.RandomVerticalFlip(),
+						transforms.RandomHorizontalFlip(),
 						transforms.ToTensor(),
 						transforms.Normalize(mean=0.5, std=0.5)
 ])
@@ -318,11 +377,13 @@ test_dataset = datasets.SVHN(root="./data/’
 )
 ```
 
-An example framework for customed dataset with `torch.utils.data.Dataset` ([Doc URL](https://pytorch.org/docs/stable/data.html#torch.utils.data.Dataset))
+An example framework for customed dataset with `torch.utils.data.Dataset` (Doc URL: https://pytorch.org/docs/stable/data.html#torch.utils.data.Dataset)
 
 - To customize your own dataset, you need to overwrite 3 functions: `__init__`, `__len__`, and `__getitem__`
 
 ```python
+from torch.utils.data import Dataset
+
 class CustomedDataset(Dataset):
   	# surrport dataset initialization
     def __init__(self, data_dir, transform):
@@ -335,7 +396,7 @@ class CustomedDataset(Dataset):
         self.data_list = []
 
         for data in os.listdir(data_dir):
-            self.data_list.append(os.path.join(data_dir, data)
+            self.data_list.append(os.path.join(data_dir, data))
                                   
 		# support to return the size of the dataset
     def __len__(self):
@@ -364,8 +425,6 @@ class CustomedDataset(Dataset):
 #### Design your dataloader
 
 After creating a dataset, we need to sample data examples from the whole dataset. Because the computation cost and the reasource limited, we can not feed the whole examples of the dataset into the neuro networks. So we need a way to sample some examples onetime.
-
-<img src="img/image-20240925210605863.png" alt="image-20240925210605863" style="zoom:50%;" />
 
 `torch.util.data.Dataloader` is a combination of `Dataset` and a sampler, providing an iterable for the whole dataset ([Doc URL](https://pytorch.org/docs/stable/data.html))
 
@@ -396,7 +455,7 @@ print(f"labels: {labels.size()}, {labels}")
 
 
 
-#### Design your model
+#### Step 2: Design your model
 
 | Layer | Type                   | Activation Function | Kernal Size | Stride | Output Channels   | Padding |
 | ----- | ---------------------- | ------------------- | ----------- | ------ | ----------------- | ------- |
@@ -419,7 +478,7 @@ print(f"labels: {labels.size()}, {labels}")
 # With square kernels and equal stride
 m = nn.Conv2d(in_channels=3, out_channels=64, kernel_size=5, stride=2, padding=1)
 
-input = torch.randn(1, 3, 25, 25)
+input = torch.randn(1, 3, 25, 25)	# 3 channel, 25 width, 25 height
 print(input.shape)
 # torch.size([1, 3, 25, 25])
 
@@ -467,7 +526,7 @@ print(y)
 #						[2.0000, 2.0000]]]])
 ```
 
-##### Linear Layer `torch.nn.Linear` ([Doc URL](https://pytorch.org/docs/stable/generated/torch.nn.Linear.html))
+##### Linear Layer `torch.nn.Linear` (Doc URL: [https://pytorch.org/docs/stable/generated/torch.nn.Linear.html#torch.nn.Linear](https://pytorch.org/docs/stable/generated/torch.nn.Linear.html))
 
 Apply a linear transformation to the incoming data $ Y = xA^T + b$
 
@@ -489,7 +548,7 @@ print(y. shape)
 
 ##### Activation Functions
 
-An activation function is a function that is added into an artificial neural network in order to help the network learn **complex patterns** in the data.
+An activation function is a function that is added into a model to help to learn **complex patterns** in the data.
 
 - keep the value of the output from the neuron restricted to a certain limit.
 
@@ -497,11 +556,11 @@ An activation function is a function that is added into an artificial neural net
 
 <img src="img/image-20240925105652624.png" alt="image-20240925105652624" style="zoom: 67%;" />
 
-Sigmiod Function: `torch.nn.Sigmoid` ([Doc URL](https://pytorch.org/docs/stable/generated/torch.nn.Sigmoid.html)) - Computationally expensive, Causes vanishing gradient problem and not zero-centred. Generally used for **binary classification** problems.
+Sigmiod Function: `torch.nn.Sigmoid` ([Doc URL]([https://pytorch.org/docs/stable/generated/torch.nn.Sigmoid.html#torch.nn.Sigmoid](https://pytorch.org/docs/stable/generated/torch.nn.Sigmoid.html))) - Computationally expensive, Causes vanishing gradient problem and not zero-centred. Generally used for **binary classification** problems.
 
-Tanh Function: `torch.nn.Tanh` ([Doc URL](https://pytorch.org/docs/stable/generated/torch.nn.Tanh.html)) - Solve the problem of non zero-center
+Tanh Function: `torch.nn.Tanh` ([Doc URL]([https://pytorch.org/docs/stable/generated/torch.nn.Tanh.html#torch.nn.Tanh](https://pytorch.org/docs/stable/generated/torch.nn.Tanh.html))) - Solve the problem of non zero-center
 
-ReLU Function: `torch.nn.ReLU` ([Doc URL](https://pytorch.org/docs/stable/generated/torch.nn.ReLU.html)) - This is a widely used activation function, especially with Convolutional Neural networks. It is easy to compute and does not saturate and does not cause the Vanishing Gradient Problem. It has just one issue of not being zero centred. It suffers from “dying ReLU” problem. Since the output is zero for all negative inputs. It causes some nodes to completely die and not learn anything.
+ReLU Function: `torch.nn.ReLU` ([Doc URL]([https://pytorch.org/docs/stable/generated/torch.nn.ReLU.html#torch.nn.ReLU](https://pytorch.org/docs/stable/generated/torch.nn.ReLU.html))) - This is a widely used activation function, especially with Convolutional Neural networks. It is easy to compute and does not saturate and does not cause the Vanishing Gradient Problem. It has just one issue of not being zero centred. It suffers from “dying ReLU” problem. Since the output is zero for all negative inputs. It causes some nodes to completely die and not learn anything.
 
 ```python
 # torch.nn.ReLU(inplace=False) [highly suggest to set the inplace=True to save memory consumption]
@@ -518,11 +577,11 @@ print(relu(x))
 #        [0.6870, 1.1721, 0.0000]])
 ```
 
-##### Build the model with `torch.nn.module` ([Doc URL](https://pytorch.org/docs/stable/generated/torch.nn.Module.html#torch.nn.Module))
+##### Build the model with `torch.nn.module` (Doc URL: [https://pytorch.org/docs/stable/generated/torch.nn.Module.html#torch.nn.Module](https://pytorch.org/docs/stable/generated/torch.nn.Module.html))
 
 `torch.nn.module` is the base class for all neural network modules.
 
-- Any models should subclass this class
+- Any models should subclass of this class
 - Modules can also contain other Modules, allowing to nest them in a tree structure
 
 ```python
@@ -567,6 +626,8 @@ class MyCNN(nn.Module):
 
 
 
+#### Step 3: backward pass: Loss function & optimizer
+
 ##### Construct loss function
 
 `torch.nn.CrossEntropyLoss` ([Doc URL](https://pytorch.org/docs/stable/generated/torch.nn.CrossEntropyLoss.html#torch.nn.CrossEntropyLoss)) computes the cross entropy loss between input logits and target
@@ -577,11 +638,12 @@ import torch
 
 loss_function = torch.nn.CrossEntropyLoss()
 loss = loss_function(output, label)
+loss.backward()
 ```
 
 
 
-##### Construct Optimizer ([Doc URL](https://pytorch.org/docs/stable/optim.html))
+##### Construct Optimizer (Doc URL: https://pytorch.org/docs/stable/optim.html)
 
 Example: `torch.optim.SGD` stochastic gradient descent
 
@@ -593,6 +655,7 @@ from torch.optim import SGD
 
 lr = 0.01
 optimizer = SGD(model.parameters(), lr=lr)
+optimizer.step()
 ```
 
 
@@ -655,7 +718,7 @@ if __name__ == '__main__':
 
 
 
-##### Save checkpoints: `torch.save` ([Doc URL](https://pytorch.org/docs/stable/generated/torch.save.html))
+##### Save checkpoints: `torch.save` (Doc URL: https://pytorch.org/docs/stable/generated/torch.save.html)
 
 ```python
 import torch
@@ -674,7 +737,7 @@ torch.save({'epoch': epoch + 1,
 
 
 
-##### Load the checkpoints to restore training `torch.load` ([Doc URL](https://pytorch.org/docs/stable/generated/torch.load.html))
+##### Load the checkpoints to restore training `torch.load` (Doc URL: https://pytorch.org/docs/stable/generated/torch.load.html)
 
 ```python
 import torch
@@ -687,13 +750,53 @@ optimizer.load_state_dict(checkpoint['optimizer'])
         
 ```
 
+```python
+if __name__ == '__main__':
+  	# initialize the dataset
+    transform = transforms.Compose([
+                transforms.RandomVerticalFlip(),
+                transforms.RandomVerticalFlip(),
+                transforms.ToTensor(),
+                transforms.Normalize(mean=0.5, std=0.5)
+    ])
+
+    train_dataset = datasets.SVHN(root="./data/’
+                                  transform=transform,
+                                  split='train'
+                                  download=True
+    )
+    
+    # construct the dataloader
+    loader_train = DataLoader(dataset=train_dataset,
+                          		batch_size=128,
+                          		shuffle=True
+		)
+  	
+    # construct the model
+    model = MyCNN()
+    
+    # create the optimizer
+    optimizer = SGD(model.parameters(), lr=0.01)
+    
+    # define the loss function
+    loss_func = loss_function = torch.nn.CrossEntropyLoss()
+    
+    for epoch in range(0, 100):
+      train_one_loop(model, loader_train, loss_func, optimizer)
+      torch.save({'epoch': epoch + 1,
+            'state_dict': model.state_dict(),
+            'optimizer' : optimizer.state_dict()}, 
+           f'checkpoint_{epoch}.pt'
+        	)
+```
+
 
 
 #### Model Evaluation
 
 Problem 1: classification task	Problem 2: segmentation task
 
-##### Classification Metrics: `torchmetrics` ([Doc URL](https://lightning.ai/docs/torchmetrics/stable/))
+##### Classification Metrics: `torchmetrics` (Doc URL: https://lightning.ai/docs/torchmetrics/stable/)
 
 `torchmetrics` is a metrics library in PyTorch that provides a collection of metrics for evaluating and monitoring the performance of deep learning models
 
@@ -713,7 +816,7 @@ accuracy = Accuracy(task="multiclass", num_classes=4)
 accuracy(preds, target)
 # tensor(0.5000)
 
-# compute multiclass AUC
+# compute multiclass AUROC
 from torchmetrics.classification import AUROC
 preds = tensor([[0.90, 0.05, 0.05],
                 [0.05, 0.90, 0.05],
@@ -725,7 +828,7 @@ auroc = AUROC(task="multiclass", num_classes=3)
 auroc(preds, target)
 ```
 
-##### Segmentation Metrics: `medpy` ([Doc URL](https://loli.github.io/medpy/metric.html))
+##### Segmentation Metrics: `medpy` (Doc URL: https://loli.github.io/medpy/metric.html) | DICE, ASD, Jaccard
 
 `MedPy` is a Python library that focuses on medical image processing tasks. It provides functionality (including commonly used medical evaluation metrics) for various image processing tasks commonly encountered in medical imaging applications.
 
@@ -742,7 +845,6 @@ DC = \frac{2|A\cap B|}{|A| +|B|}
 $$
 
 ```python
-
 from medpy.metric.binary import dc
 import torch
 
@@ -790,7 +892,7 @@ print(asd)
 # 0.13043478260869565
 ```
 
-###### Jaccard coefficient `medpy.metric.binary.jc` ([Doc URL](https://loli.github.io/medpy/reference/generated/medpy.metric.binary.jc.html))
+###### Jaccard coefficient | IoU `medpy.metric.binary.jc` ([Doc URL](https://loli.github.io/medpy/reference/generated/medpy.metric.binary.jc.html))
 
 Similar to DICE, Jaccard coefficient also quantifies the overlap between the segmented region and the ground truth by computing the intersection divided by the union of the two regions. (more sensitive to class-imbalance problem)
 $$
@@ -820,7 +922,7 @@ print(jaccard)
 
 ##### Class Activation Map ([Paper Link](https://arxiv.org/pdf/1512.04150))
 
-- Convolutional neural network to have remarkable localization ability despite being trained on image-level labels
+- An attention map that reflect the **contribution level** of the classification of certain type - show whether your model focus on the right image regions
 
 - Replace the fully connected layer with global average pooling layer for the feature maps, and pool each feature map into one feature vector
 
@@ -834,7 +936,7 @@ print(jaccard)
 
 Upgraded version: Gradient Class Activation Map ([Paper](https://arxiv.org/pdf/1610.02391), [Github](https://github.com/jacobgil/pytorch-grad-cam), [Tutorial](https://jacobgil.github.io/pytorch-gradcam-book/introduction.html))
 
-```
+```shell
 pip install grad-cam
 ```
 
@@ -844,21 +946,36 @@ pip install grad-cam
 
 #### Quick Look at the medical data
 
-Assignment 1: **Microscopic Skin Lesion Image** (2D medical image)
+##### Problem 1: **Microscopic Skin Lesion Image** (2D medical image)
 
-- Other similar medical image: H&E whole slide image, Fundus image, X-ray image, etc
+- Other 2D medical image: H&E stained whole slide image, Fundus image, X-ray image, etc
 - Data format: similar to natural image, JPEG, PNG, TIF, SVS (gigapixel WSI), DICOM (X-ray)
 
 ![image-20240925151149763](img/image-20240925151149763.png)
 
-Assignment 2: **Heart Magnetic Resonance Image** (3D medical image)
+###### Accessing 2D medical data
 
-- Other similar medical image: Computed Tomography, Optical Coherence Tomography, Positron emission tomography
+`Opencv-python` and `Pillow` for reading 2D RGB or gray-scale data
+
+```python
+import cv2
+image = cv2.imread('./*.png')		# return BGR ndarray
+
+from PIL import Image
+image = Image.open('./*.png')		# return RGB PIL.Image object
+image - np.asarray(image)
+```
+
+
+
+##### Problem 2: **Heart Magnetic Resonance Image** (3D medical image)
+
+- Other 3D medical image: Computed Tomography, Optical Coherence Tomography, Positron emission tomography
 - Data format: DICOM | .dcm (CT, OCT); NIFTI | .nii.gz (MRI, PET)
 
 ![image-20240925151524702](img/image-20240925151524702.png)
 
-#### Access 3D medical Data
+###### Access 3D medical Data
 
 `ITK-SNAP` Software for 3D medical data visualization (URL: http://www.itksnap.org/pmwiki/pmwiki.php)
 
@@ -866,7 +983,7 @@ Assignment 2: **Heart Magnetic Resonance Image** (3D medical image)
 
 ![image-20240925155021867](img/image-20240925155021867.png)
 
-`SimpleITK` for access raw image data in Python ([Doc URL](https://simpleitk.readthedocs.io/en/master/gettingStarted.html#python-binary-files))
+`SimpleITK` for access raw image data in Python (Doc URL: https://simpleitk.readthedocs.io/en/master/gettingStarted.html#python-binary-files)
 
 ```shell
 pip install SimpleITK
@@ -879,7 +996,7 @@ import SimpleITK as sitk
 dcm_image = sitk.ReadImage('*.dcm')		# load dicom file (.dcm)
 dcm_arr = sitk.GetArrayFromImage(dcm_image)    # get numpy ndarray of dcm
 
-# Use SimpleITK to load single DICOM series
+# Use SimpleITK to load DICOM series
 reader = sitk.ImageSeriesReader( )
 dcm_dir = 'xxx/xxx/xxx/'				# get the dir path to the series
 dicom_names = reader.GetGDCMSeriesFileNames(dcm_dir)	# get dicom file names
@@ -899,7 +1016,7 @@ nifti_arr = sitk.GetArrayFromImage(nifti_image)    # get numpy ndarray of nifti
 ```python
 # normalization for MR Image
 
-# thresh out the lowest 5% and highest 95% to remove the outliers or extreme pixel values
+# thresh out the lowest 5% and highest 5% to remove the outliers or extreme pixel values
 p5 = np.percentile(image.flatten(), 0.5)
 p95 = np.percentile(image.flatten(), 99.5)
 image = image.clip(min=p5, max=p95)
@@ -955,7 +1072,7 @@ class MRIDataset(Dataset):
         return image, label
     
   def read_data(self, path):
-        nifti_image = sitk.ReadImage(path)     # load notfi mri file
+        nifti_image = sitk.ReadImage(path)     # load nitfi mri file
 				nifti_arr = sitk.GetArrayFromImage(nifti_image)    # get numpy ndarray of nifti
         label = #
                                   
@@ -964,31 +1081,22 @@ class MRIDataset(Dataset):
 
 
 
-### Image Augmentation to avoid overfitting
+### Details & Head-up of Assignment 1 (Coding Project)
 
-**Overfitting** occurs when a model learns the training data too well, including the noise and random fluctuations in the data, rather than capturing the underlying patterns, the common phenomenon is that training loss has been really low, but validation loss is still high.
+#### Problem 1: Skin Lesion Classification (ISIC 2018 task 3)
 
-<img src="img/image-20240925214704453.png" alt="image-20240925214704453" style="zoom:50%;" />
+Dataset Download: https://challenge.isic-archive.com/data/#2018
 
-#### Image Augmentation `torchvision.transforms` ([Doc URL](https://pytorch.org/vision/stable/auto_examples/transforms/plot_transforms_illustrations.html#sphx-glr-auto-examples-transforms-plot-transforms-illustrations-py))
+- Eight Classes: Melanoma, Melanocytic nevus, Basal Cell Carcinoma, Actinic Keratosis, Benign Keratosis, Dermatofibroma, Vascular Lesion 
 
-```python
-from torchvision import transforms
+<img src="/Users/elliotz/Library/Application Support/typora-user-images/image-20240926111733298.png" alt="image-20240926111733298" style="zoom:80%;" />
 
-transform = transforms.Compose([
-                transforms.RandomVerticalFlip(),	# Randomly perform Vertical Flip 
-                transforms.RandomHorizontalFlip(),  # Randomly perform Horizontal Flip 
-  							transforms.RandomRotation(degrees=(0, 180)),  # Randomly perform rotation
-  							transforms.GaussianBlur(kernel_size=(5, 9), sigma=(0.1, 5.)),		# Randomly perform GaussianBlur
-  							transforms.ColorJitter(brightness=.5, hue=.3),	# Randomly perform ColorJitter
-                transforms.ToTensor(),
-                transforms.Normalize(mean=0.5, std=0.5)
-    ])
-```
+**Semi-supervised learning for using extra training data is allowed (ISIC2019)**
 
-<img src="img/image-20240925221504466.png" alt="image-20240925221504466" style="zoom:50%;" />
+#### Problem 2: Heat MRI Segmentation (LA-Seg)
 
+Pre-processed data (.h5, numpy ndarray) download: https://drive.google.com/drive/folders/12k56k2JCOYtMbA_8BtrlyrFLONUSqqje?usp=sharing
 
+Un-processed raw data (.nrrd) download: https://www.cardiacatlas.org/atriaseg2018-challenge/atria-seg-data/
 
-
-
+***Important note: if you fulfill the performance requirement, you will get the full mark, I don't want to raise any competition between the classmates***
