@@ -15,7 +15,6 @@ Qixiang ZHANG (Year 2 PhD student)	Supervisor: Prof. Xiaomeng LI	Research Intere
 - Basic knowledge (Python, Numpy, PyTorch)
 - A Brief Introduction to Train a Model with PyTorch
 - Understanding Medical Data & Preprocess
-- Avoid Overfitting
 - Details about Assignment 1
 
 ### Prerequisite
