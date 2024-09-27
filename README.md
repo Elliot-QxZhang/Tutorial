@@ -1,4 +1,4 @@
-## ELEC 5690 Tutorial for Assignment 1
+## Tutorial for Assignment 1
 
 ### Outline
 
