@@ -1,6 +1,6 @@
 ## Tutorial for Assignment 1
 
-Material Link: https://github.com/Elliot-QxZhang/ELEC5690-Tutorial
+Material Link: https://github.com/Elliot-QxZhang/Tutorial
 
 ### Personal Introduction
 
